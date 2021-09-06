@@ -8,7 +8,7 @@ import {
   View,
   TextInput,
   StatusBar,
-  Button,
+  TouchableOpacity,
 } from 'react-native';
 import data from './data';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -21,10 +21,8 @@ export default class App extends Component {
       data: [],
       loadMoreVisible: true,
     };
-
     this.arrayholder = [];
   }
-
   componentDidMount() {
     this.arrayholder = data.info;
     this.setState({
@@ -34,11 +32,6 @@ export default class App extends Component {
         this.arrayholder = data.info;
       };
   }
-
-  GetFlatListItem(userName) {
-    Alert.alert(userName);
-  }
-
   searchData(text) {
     const newData = this.arrayholder.filter(item => {
       const itemData = item.userName.toUpperCase();
@@ -58,6 +51,7 @@ export default class App extends Component {
   approvedUser = () => {
     Alert.alert('approvedUser');
   };
+
   render() {
     const Item = ({title}) => (
       <View style={styles.item}>
@@ -76,18 +70,18 @@ export default class App extends Component {
               flexDirection: 'row',
             }}>
             <View style={{marginRight: 10}}>
-              <Button
-                title="Make Admin"
-                color="#72BB53"
+              <TouchableOpacity
                 onPress={this.makeAdmin}
-              />
+                style={styles.buttonStyling}>
+                <Text style={styles.textStyles}>Make Admin</Text>
+              </TouchableOpacity>
             </View>
             <View>
-              <Button
-                title="Approve"
-                color="#72BB53"
+              <TouchableOpacity
                 onPress={this.approvedUser}
-              />
+                style={styles.buttonStyling}>
+                <Text style={styles.textStyles}>Approve</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -99,7 +93,7 @@ export default class App extends Component {
         <View style={styles.container}>
           <View style={styles.sectionStyle}>
             <Icon
-              style={styles.imageStyle}
+              style={styles.iconStyling}
               name="search"
               size={20}
               color="#000"
@@ -147,6 +141,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginLeft: -30,
   },
+  buttonStyling: {
+    backgroundColor: '#72BB53',
+    padding: 10,
+    marginLeft: 2,
+    borderRadius: 4,
+  },
+  textStyles: {
+    color: 'white',
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
   sectionStyle: {
     flexDirection: 'row',
     justifyContent: 'center',
@@ -156,9 +161,10 @@ const styles = StyleSheet.create({
     borderColor: 'grey',
     height: 45,
     borderRadius: 50,
-    margin: 10,
+    marginLeft: 20,
+    marginRight: 20,
   },
-  imageStyle: {
+  iconStyling: {
     padding: 14,
     marginTop: 35,
     height: 85,
