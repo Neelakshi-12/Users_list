@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 
 import {
-  ActivityIndicator,
   Alert,
   FlatList,
   Text,
@@ -9,32 +8,27 @@ import {
   View,
   TextInput,
   StatusBar,
+  Button,
 } from 'react-native';
-import {Button} from 'react-native-elements';
-import {SearchBar} from 'react-native-elements';
-
-import {Icon} from 'react-native-elements';
 import data from './data';
+import Icon from 'react-native-vector-icons/FontAwesome';
 export default class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isLoading: true,
       text: '',
       data: [],
-      allData: data.info,
+      loadMoreVisible: true,
     };
 
     this.arrayholder = [];
   }
 
   componentDidMount() {
-    console.log('all data', this.state.allData);
     this.arrayholder = data.info;
     this.setState({
       data: data.info,
-      isLoading: false,
     }),
       () => {
         this.arrayholder = data.info;
@@ -58,18 +52,12 @@ export default class App extends Component {
     });
   }
 
-  itemSeparator = () => {
-    return (
-      <View
-        style={{
-          height: 0.5,
-          width: '100%',
-          backgroundColor: '#000',
-        }}
-      />
-    );
-  };
-
+  // makeAdmin = () => {
+  //   Alert.alert('makeAdmin');
+  // };
+  // approvedUser = () => {
+  //   Alert.alert('approvedUser');
+  // };
   render() {
     const Item = ({title}) => (
       <View style={styles.item}>
@@ -79,9 +67,10 @@ export default class App extends Component {
             justifyContent: 'space-between',
             flex: 1,
           }}>
-          <View>
-            <Text style={styles.title}>{title}</Text>
-          </View>
+          <Text numberOfLines={1} style={styles.title}>
+            {title}
+          </Text>
+
           <View
             style={{
               flexDirection: 'row',
@@ -89,64 +78,52 @@ export default class App extends Component {
             <View style={{marginRight: 10}}>
               <Button
                 title="Make Admin"
-                buttonStyle={{backgroundColor: '#72BB53'}}
+                color="#72BB53"
+                onPress={this.makeAdmin}
               />
             </View>
             <View>
               <Button
                 title="Approve"
-                buttonStyle={{backgroundColor: '#72BB53'}}
+                color="#72BB53"
+                onPress={this.approvedUser}
               />
             </View>
           </View>
         </View>
       </View>
     );
-    if (this.state.isLoading) {
-      return (
-        <View style={{flex: 1, paddingTop: 20}}>
-          <ActivityIndicator />
-        </View>
-      );
-    }
     const renderItem = ({item}) => <Item title={item.userName} />;
     return (
-      <View style={styles.MainContainer}>
-        {/* <TextInput
-          style={styles.textInput}
-          onChangeText={text => this.searchData(text)}
-          value={this.state.text}
-          underlineColorAndroid="transparent"
-          placeholder="Search"
-        /> */}
-        <SearchBar
-          onChangeText={text => this.searchData(text)}
-          placeholder="Search"
-          lightTheme
-          clearIcon
-          containerStyle={{
-            backgroundColor: 'white',
-            borderRadius: 50,
-            borderColor: 'grey',
-            borderWidth: 2,
-            borderTopWidth: 2,
-            borderTopColor: 'grey',
-            borderBottomColor: 'grey',
-            borderBottomWidth: 2,
-            marginTop: 20,
-            marginRight: 10,
-            marginLeft: 10,
-            paddingTop: -2,
-            paddingBottom: -2,
-          }}
-          searchIcon={{size: 24}}
-          inputContainerStyle={{backgroundColor: 'white', borderRadius: 30}}
-        />
-        <FlatList
-          data={this.state.data}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={renderItem}
-        />
+      <View>
+        <View style={styles.container}>
+          <View style={styles.sectionStyle}>
+            <Icon
+              style={styles.imageStyle}
+              name="search"
+              size={20}
+              color="#000"
+            />
+            <TextInput
+              style={styles.textInput}
+              onChangeText={text => this.searchData(text)}
+              value={this.state.text}
+              underlineColorAndroid="transparent"
+              placeholder="Search"
+            />
+          </View>
+        </View>
+        {this.state.data.length != 0 ? (
+          <FlatList
+            data={this.state.data}
+            keyExtractor={(item, index) => index.toString()}
+            renderItem={renderItem}
+          />
+        ) : (
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <Text style={{fontSize: 24}}>No User Found.</Text>
+          </View>
+        )}
       </View>
     );
   }
@@ -154,26 +131,37 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginTop: StatusBar.currentHeight || 0,
   },
   item: {
-    // backgroundColor: 'white',
     padding: 20,
     marginVertical: 0,
     marginHorizontal: 5,
   },
   title: {
-    fontSize: 24,
+    fontSize: 22,
+    flex: 1,
   },
   textInput: {
-    padding: 5,
-    paddingLeft: 20,
-    height: 45,
-    margin: 10,
+    flex: 1,
+    fontSize: 18,
+    marginLeft: -30,
+  },
+  sectionStyle: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
     borderWidth: 1,
     borderColor: 'grey',
+    height: 45,
     borderRadius: 50,
-    backgroundColor: '#FFFF',
+    margin: 10,
+  },
+  imageStyle: {
+    padding: 14,
+    marginTop: 35,
+    height: 85,
+    width: 85,
   },
 });
