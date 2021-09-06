@@ -17,8 +17,10 @@ export default class App extends Component {
     super(props);
 
     this.state = {
+      isLoading: true,
       text: '',
       data: [],
+      allData: data.info,
       loadMoreVisible: true,
     };
 
@@ -29,6 +31,7 @@ export default class App extends Component {
     this.arrayholder = data.info;
     this.setState({
       data: data.info,
+      isLoading: false,
     }),
       () => {
         this.arrayholder = data.info;
@@ -95,23 +98,37 @@ export default class App extends Component {
     );
     const renderItem = ({item}) => <Item title={item.userName} />;
     return (
-      <View>
-        <View style={styles.container}>
-          <View style={styles.sectionStyle}>
-            <Icon
-              style={styles.imageStyle}
-              name="search"
-              size={20}
-              color="#000"
-            />
-            <TextInput
-              style={styles.textInput}
-              onChangeText={text => this.searchData(text)}
-              value={this.state.text}
-              underlineColorAndroid="transparent"
-              placeholder="Search"
-            />
-          </View>
+      <View style={styles.MainContainer}>
+        {/* <View>
+          <Icon
+            style={styles.searchIcon}
+            name="ios-search"
+            size={20}
+            color="#000"
+          />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={text => this.searchData(text)}
+            value={this.state.text}
+            underlineColorAndroid="transparent"
+            placeholder="Search"
+          />
+        </View> */}
+
+        <View>
+          <Icon
+            style={styles.searchIcon}
+            name="search"
+            size={20}
+            color="#000"
+          />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={text => this.searchData(text)}
+            value={this.state.text}
+            underlineColorAndroid="transparent"
+            placeholder="Search"
+          />
         </View>
         {this.state.data.length != 0 ? (
           <FlatList
@@ -139,29 +156,35 @@ const styles = StyleSheet.create({
     marginHorizontal: 5,
   },
   title: {
-    fontSize: 22,
+    fontSize: 24,
     flex: 1,
   },
   textInput: {
-    flex: 1,
-    fontSize: 18,
-    marginLeft: -30,
+    padding: 5,
+    paddingLeft: 20,
+    height: 45,
+    margin: 10,
+    borderWidth: 1,
+    borderColor: 'grey',
+    borderRadius: 50,
+    backgroundColor: '#FFFF',
   },
-  sectionStyle: {
+  searchSection: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
-    borderWidth: 1,
-    borderColor: 'grey',
-    height: 45,
-    borderRadius: 50,
-    margin: 10,
   },
-  imageStyle: {
-    padding: 14,
-    marginTop: 35,
-    height: 85,
-    width: 85,
+  searchIcon: {
+    padding: 10,
+  },
+  input: {
+    flex: 1,
+    paddingTop: 10,
+    paddingRight: 10,
+    paddingBottom: 10,
+    paddingLeft: 0,
+    backgroundColor: '#fff',
+    color: '#424242',
   },
 });
